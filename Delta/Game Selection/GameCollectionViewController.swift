@@ -71,6 +71,9 @@ class GameCollectionViewController: UICollectionViewController
     private var _importingSaveFileGame: Game?
     private var _exportedSaveFileURL: URL?
     
+    private var _gameCellSourceView: UIView?
+    private var _gameCellSourceRect: CGRect?
+
     required init?(coder aDecoder: NSCoder)
     {
         self.dataSource = RSTFetchedResultsCollectionViewPrefetchingDataSource<Game, UIImage>(fetchedResultsController: NSFetchedResultsController())
@@ -692,6 +695,12 @@ private extension GameCollectionViewController
                 print(error)
             }
         }
+        
+        activityViewController.popoverPresentationController?.sourceView = self._gameCellSourceView
+        if let sourceRect = self._gameCellSourceRect {
+            activityViewController.popoverPresentationController?.sourceRect = sourceRect
+        }
+        
         self.present(activityViewController, animated: true, completion: nil)
     }
     
@@ -787,6 +796,16 @@ private extension GameCollectionViewController
         let actions = self.actions(for: game)
         
         let alertController = UIAlertController(actions: actions)
+        if let popoverController = alertController.popoverPresentationController {
+            
+            self._gameCellSourceView = self.collectionView.cellForItem(at: indexPath)?.contentView
+            self._gameCellSourceRect = collectionView.layoutAttributesForItem(at: indexPath)?.bounds
+
+            popoverController.sourceView = self._gameCellSourceView
+            if let sourceRect = self._gameCellSourceRect {
+                popoverController.sourceRect = sourceRect
+            }
+        }
         self.present(alertController, animated: true, completion: nil)
     }
 }

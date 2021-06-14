@@ -238,9 +238,9 @@ extension AppIconShortcutsViewController
 {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        guard indexPath.section == 0 else { return super.tableView(tableView, heightForRowAt: indexPath) }
-        
-        return 44
+        guard indexPath.section == 0 else { return 97 }
+
+        return UITableView.automaticDimension
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
